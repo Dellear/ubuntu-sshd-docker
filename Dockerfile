@@ -7,8 +7,6 @@ ENV GIT_USER_NAME="root" \
     PASSWORD="" \
     TZ=Asia/Shanghai
 
-EXPOSE 22
-
 RUN apt update -y \
     && DEBIAN_FRONTEND="noninteractive" apt install git tzdata openssh-server -y \
     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config \
@@ -20,6 +18,10 @@ RUN apt update -y \
 COPY ./init.sh /init
 
 RUN chmod +x /init
+
+VOLUME ["/root/.ssh", "/etc/ssh"]
+
+EXPOSE 22
 
 CMD ["bash"]
 
